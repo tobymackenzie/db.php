@@ -53,8 +53,8 @@ class DB{
 		return $this->connection;
 	}
 	protected function execute($query, $params = null){
-		if(!($query instanceof DBQuery)){
-			$query = $this->createQuery($query);
+		if(!($query instanceof Statement)){
+			$query = $this->createStatment($query);
 		}
 		return $this->try(function() use($query, $params){
 			return $query->execute($params);
@@ -64,8 +64,8 @@ class DB{
 		});
 	}
 	public function prepare($query){
-		if(!($query instanceof DBQuery)){
-			$query = $this->createQuery($query);
+		if(!($query instanceof Statement)){
+			$query = $this->createStatment($query);
 		}
 		$query->setStatement($this->try(function() use($query){
 			return $this->getConnection()->prepare($query->getSql());
@@ -73,8 +73,8 @@ class DB{
 		return $query;
 	}
 	public function query($query, $params = Array()){
-		if(!($query instanceof DBQuery)){
-			$query = $this->createQuery($query);
+		if(!($query instanceof Statement)){
+			$query = $this->createStatment($query);
 		}
 		if($params){
 			if(!$query->hasStatement()){
@@ -89,9 +89,6 @@ class DB{
 				return $query;
 			});
 		}
-	}
-	public function createQuery($query = null){
-		return new DBQuery($query);
 	}
 	protected function reconnect(){
 		$connected = false;
@@ -108,6 +105,9 @@ class DB{
 		if(!$connected){
 			throw $e;
 		}
+	}
+	public function createStatment($query = null){
+		return new Statement($query);
 	}
 	protected function try(Callable $do, Callable $onReconnect = null, Callable $onFail = null){
 		try{

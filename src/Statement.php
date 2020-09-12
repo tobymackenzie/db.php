@@ -5,7 +5,7 @@ use Exception;
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
-class DBQuery{
+class Statement{
 	protected $params;
 	protected $query;
 	protected $result;
@@ -21,7 +21,7 @@ class DBQuery{
 		if(method_exists($this->statement, $name)){
 			return call_user_func_array(Array($this, $name), $args);
 		}else{
-			throw new BadMethodCallException("Call to undefined method `DBQuery::{$name}()`");
+			throw new BadMethodCallException("Call to undefined method `Statement::{$name}()`");
 		}
 	}
 	public function execute(array $params = null){
@@ -42,7 +42,7 @@ class DBQuery{
 		}elseif($set instanceof PDOStatement){
 			$this->setStatement($set);
 			$this->setQuery($set->queryString);
-		}elseif($set instanceof DBQuery){
+		}elseif($set instanceof Statement){
 			$this->setQuery($set->getQuery());
 			$this->setResult($set->getResult());
 			$this->setStatement($set->getStatement());
