@@ -18,7 +18,7 @@ class Statement{
 	}
 	public function __call($name, $args){
 		if(method_exists($this->statement, $name)){
-			return call_user_func_array(Array($this, $name), $args);
+			return call_user_func_array(array($this, $name), $args);
 		}else{
 			throw new BadMethodCallException("Call to undefined method `Statement::{$name}()`");
 		}
@@ -56,13 +56,13 @@ class Statement{
 		}
 	}
 	public function getParameters(){
-		return $this->hasQuery() ? $this->getQuery()->getParameters() : Array();
+		return $this->hasQuery() ? $this->getQuery()->getParameters() : array();
 	}
 	public function hasParameters(){
 		return $this->hasQuery() ? $this->getQuery()->hasParameters() : false;
 	}
 	public function setParameters($value = null){
-		$this->hasQuery() ? $this->getQuery()->getParameters() : Array();
+		$this->hasQuery() ? $this->getQuery()->getParameters() : array();
 	}
 	public function getQuery(){
 		return $this->query;

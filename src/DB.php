@@ -16,7 +16,7 @@ class DB{
 	protected $reconnectTries = 0;
 	protected $reconnectDelay = 400; // in ms
 	protected $user;
-	protected $options = Array(
+	protected $options = array(
 		PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION
 	);
 	public function __construct($dsnOrOpts, $user = null, $password = null, $options = null){
@@ -72,7 +72,7 @@ class DB{
 		}));
 		return $query;
 	}
-	public function query($query, $params = Array()){
+	public function query($query, $params = array()){
 		if(!($query instanceof Statement)){
 			$query = $this->createStatment($query);
 		}

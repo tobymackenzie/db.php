@@ -15,7 +15,7 @@ class Query{
 		return $this->getSql();
 	}
 	public function getParameters(){
-		return $this->params ?: Array();
+		return $this->params ?: array();
 	}
 	public function hasParameters(){
 		return (bool) $this->params;
