@@ -6,12 +6,11 @@ use InvalidArgumentException;
 use PDO;
 use PDOStatement;
 class Statement{
-	protected $params;
 	protected $query;
 	protected $result;
 	protected $statement;
 	public function __construct($opts = null){
-		if(is_string($opts)){
+		if(is_string($opts) || $opts instanceof Query){
 			$this->setQuery($opts);
 		}elseif($opts){
 			$this->set($opts);
@@ -42,6 +41,8 @@ class Statement{
 		}elseif($set instanceof PDOStatement){
 			$this->setStatement($set);
 			$this->setQuery($set->queryString);
+		}elseif($set instanceof Query){
+			$this->setQuery($set);
 		}elseif($set instanceof Statement){
 			$this->setQuery($set->getQuery());
 			$this->setResult($set->getResult());
@@ -55,18 +56,24 @@ class Statement{
 		}
 	}
 	public function getParameters(){
-		return $this->params ?: Array();
+		return $this->hasQuery() ? $this->getQuery()->getParameters() : Array();
 	}
 	public function hasParameters(){
-		return (bool) $this->params;
+		return $this->hasQuery() ? $this->getQuery()->hasParameters() : false;
 	}
 	public function setParameters($value = null){
-		$this->params = $value;
+		$this->hasQuery() ? $this->getQuery()->getParameters() : Array();
 	}
 	public function getQuery(){
 		return $this->query;
 	}
+	public function hasQuery(){
+		return (bool) $this->query;
+	}
 	public function setQuery($value = null){
+		if(isset($value) && !($value instanceof Query)){
+			$value = new Query($value);
+		}
 		$this->query = $value;
 	}
 	public function getResult(){
@@ -76,8 +83,8 @@ class Statement{
 		$this->result = $result;
 	}
 	public function getSql(){
-		if($this->query){
-			return $this->query;
+		if($this->hasQuery()){
+			return $this->getQuery()->getSql();
 		}elseif($this->statement){
 			return $this->statement->queryString;
 		}else{
