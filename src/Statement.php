@@ -24,7 +24,7 @@ class Statement{
 		}
 	}
 	public function execute(array $params = null){
-		if($params === true && $this->hasParameters()){
+		if((!isset($params) || $params === true) && $this->hasParameters()){
 			$params = $this->getParameters();
 		}else{
 			$this->setParameters($params);

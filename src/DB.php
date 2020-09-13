@@ -76,6 +76,9 @@ class DB{
 		if(!($query instanceof Statement)){
 			$query = $this->createStatment($query);
 		}
+		if(!isset($params) && $query->hasParameters()){
+			$params = $query->getParameters();
+		}
 		if($params){
 			if(!$query->hasStatement()){
 				$this->prepare($query);
