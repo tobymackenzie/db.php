@@ -1,0 +1,20 @@
+{
+	"name": "tjm/db"
+	,"description": "Simple PDO abstraction for querying and other database utilities"
+	,"authors": [
+		{
+			"name": "Toby Mackenzie"
+			,"email": "public@tobymackenzie.com"
+			,"homepage": "https://www.tobymackenzie.com"
+		}
+	]
+	,"license": "BSD-3-Clause"
+	,"autoload": {
+		"psr-4": {
+			"TJM\\DB\\": "src"
+		}
+	}
+	,"require": {
+		"php": ">=5.3.3"
+	}
+}
