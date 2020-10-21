@@ -6,7 +6,7 @@ class Structure{
 	public function __construct($opts = null){
 		if(is_string($opts)){
 			$this->sql = $opts;
-		}else{
+		}elseif(is_array($opts)){
 			$this->set($opts);
 		}
 	}
