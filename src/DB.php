@@ -52,44 +52,44 @@ class DB{
 		}
 		return $this->connection;
 	}
-	protected function execute($query, $params = null){
-		if(!($query instanceof Statement)){
-			$query = $this->createStatment($query);
+	protected function execute($statement, $params = null){
+		if(!($statement instanceof Statement)){
+			$statement = $this->createStatment($statement);
 		}
-		return $this->try(function() use($query, $params){
-			return $query->execute($params);
-		}, function() use($query, $params){
-			$this->prepare($query);
-			return $this->execute($query, $params);
+		return $this->try(function() use($statement, $params){
+			return $statement->execute($params);
+		}, function() use($statement, $params){
+			$this->prepare($statement);
+			return $this->execute($statement, $params);
 		});
 	}
-	public function prepare($query){
-		if(!($query instanceof Statement)){
-			$query = $this->createStatment($query);
+	public function prepare($statement){
+		if(!($statement instanceof Statement)){
+			$statement = $this->createQueryStatement($statement);
 		}
-		$query->setStatement($this->try(function() use($query){
-			return $this->getConnection()->prepare($query->getSql());
+		$statement->setStatement($this->try(function() use($statement){
+			return $this->getConnection()->prepare($statement->getSql());
 		}));
-		return $query;
+		return $statement;
 	}
-	public function query($query, $params = array()){
-		if(!($query instanceof Statement)){
-			$query = $this->createStatment($query);
+	public function query($statement, $params = array()){
+		if(!($statement instanceof Statement)){
+			$statement = $this->createQueryStatement($statement);
 		}
-		if(!isset($params) && $query->hasParameters()){
-			$params = $query->getParameters();
+		if(!isset($params) && $statement->hasParameters()){
+			$params = $statement->getParameters();
 		}
 		if($params){
-			if(!$query->hasStatement()){
-				$this->prepare($query);
+			if(!$statement->hasStatement()){
+				$this->prepare($statement);
 			}
-			$this->execute($query, $params);
-			return $query;
+			$this->execute($statement, $params);
+			return $statement;
 		}else{
-			return $this->try(function() use($query){
-				$query->setStatement($this->getConnection()->query($query->getSql()));
-				$query->setResult(true);
-				return $query;
+			return $this->try(function() use($statement){
+				$statement->setStatement($this->getConnection()->query($statement->getSql()));
+				$statement->setResult(true);
+				return $statement;
 			});
 		}
 	}
@@ -109,8 +109,11 @@ class DB{
 			throw $e;
 		}
 	}
-	public function createStatment($query = null){
-		return new Statement($query);
+	protected function createQueryStatement($opts = null){
+		return $this->createStatment(Query::create($opts));
+	}
+	protected function createStatment($opts = null){
+		return new Statement($opts);
 	}
 	protected function try(Callable $do, Callable $onReconnect = null, Callable $onFail = null){
 		try{
