@@ -1,6 +1,6 @@
 <?php
 namespace TJM\DB\Query;
-class Join extends Structure{
+class Join extends Clause{
 	protected $alias;
 	protected $on;
 	protected $table;
