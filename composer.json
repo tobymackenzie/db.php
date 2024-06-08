@@ -10,9 +10,8 @@
 	]
 	,"license": "BSD-3-Clause"
 	,"autoload": {
-		"psr-4": {
-			"TJM\\DB\\": "src"
-		}
+		"psr-4": {"TJM\\DB\\": "src"},
+		"classmap": ["src/DB.php"]
 	}
 	,"require": {
 		"php": ">=5.3.3"

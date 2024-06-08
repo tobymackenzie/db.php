@@ -1,8 +1,11 @@
 <?php
-namespace TJM\DB;
+namespace TJM;
 use Exception;
 use PDO;
 use PDOStatement;
+use TJM\DB\Query;
+use TJM\DB\Statement;
+
 class DB{
 	protected $connection;
 	protected $password;
