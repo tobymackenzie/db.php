@@ -32,7 +32,8 @@ class Statement{
 		$this->setResult($this->getStatement()->execute($params));
 		return $this->getResult();
 	}
-	public function fetch(int $style = null, int $cursorOrientation = PDO::FETCH_ORI_NEXT, int $cursorOffset = 0){
+	//-! style should be PDO::FETCH_DEFAULT but requires PHP 8.07
+	public function fetch(int $style = PDO::FETCH_ASSOC, int $cursorOrientation = PDO::FETCH_ORI_NEXT, int $cursorOffset = 0){
 		return $this->getStatement()->fetch($style, $cursorOrientation, $cursorOffset);
 	}
 	protected function set($set, $value = null){
