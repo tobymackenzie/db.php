@@ -16,6 +16,8 @@ foreach([5, 6] as $id){
 }
 ```
 
+Can optionally connect through SSH tunnel to remote server if `sshID` is set, optionally with `sshDBConnection`.
+
 `DB` will automatically attempt to reconnect to the database if the connection is broken, which can happen in long running scripts, for example.
 
 The query can be an array or object with a special format meant to make progressively building a query easier, but that interface is still being worked out.  Examples of some of these formats that are currently supported	can be seen in the unit tests, but there's a chance some of those won't be supported in the future.

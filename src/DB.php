@@ -19,6 +19,12 @@ class DB{
 	protected $options = array(
 		PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION
 	);
+
+	//--ssh tunnel
+	protected $sshID; //--ssh 'user@server' to connect to.  Don't need user if specified in ssh config
+	protected $sshDBConnection = '127.0.0.1:3306'; //--remote `IP:Port` to connect to from remote server
+	protected $tunnel;
+
 	public function __construct($dsnOrOpts, $user = null, $password = null, $options = null){
 		if($options){
 			$this->options = $options;
@@ -46,8 +52,12 @@ class DB{
 			$this->dsn = $dsnOrOpts;
 		}
 	}
+	public function __destruct(){
+		$this->closeTunnel();
+	}
 	public function getConnection(){
 		if(!$this->connection){
+			$this->openTunnel();
 			$this->connection = new PDO($this->dsn, $this->user, $this->password, $this->options);
 		}
 		return $this->connection;
@@ -135,5 +145,25 @@ class DB{
 				throw $e;
 			}
 		}
+	}
+
+	//==ssh tunnel
+	protected function closeTunnel(){
+		if(!empty($this->tunnel)){
+			$stat = proc_get_status($this->tunnel);
+			posix_kill($stat['pid'], SIGKILL);
+			proc_close($this->tunnel);
+			unset($this->tunnel);
+		}
+	}
+	protected function needTunnel(){
+		return !empty($this->sshID) && empty($this->tunnel);
+	}
+	protected function openTunnel(){
+		if($this->needTunnel()){
+			$this->tunnel = proc_open("ssh {$this->sshID} -L 8306:{$this->sshDBConnection} -N", [], $nope);
+			return true;
+		}
+		return false;
 	}
 }
