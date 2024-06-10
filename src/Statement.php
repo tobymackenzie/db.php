@@ -63,7 +63,7 @@ class Statement{
 		return $this->hasQuery() ? $this->getQuery()->hasParameters() : false;
 	}
 	public function setParameters($value = null){
-		$this->hasQuery() ? $this->getQuery()->getParameters() : array();
+		$this->getQuery()->setParameters($value);
 	}
 	public function getQuery(){
 		return $this->query;
