@@ -35,7 +35,7 @@ class Statement{
 				$type = PDO::PARAM_INT;
 			}elseif(is_null($value)){
 				$type = PDO::PARAM_NULL;
-			}elseif(is_boolean($value)){
+			}elseif(is_bool($value)){
 				$type = PDO::PARAM_BOOL;
 			}else{
 				$type = PDO::PARAM_STR;
