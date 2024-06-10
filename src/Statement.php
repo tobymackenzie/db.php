@@ -29,7 +29,20 @@ class Statement{
 		}else{
 			$this->setParameters($params);
 		}
-		$this->setResult($this->getStatement()->execute($params));
+		//-# using bind so we can support integer values
+		foreach($params as $param=> $value){
+			if(is_integer($value)){
+				$type = PDO::PARAM_INT;
+			}elseif(is_null($value)){
+				$type = PDO::PARAM_NULL;
+			}elseif(is_boolean($value)){
+				$type = PDO::PARAM_BOOL;
+			}else{
+				$type = PDO::PARAM_STR;
+			}
+			$this->getStatement()->bindValue(':' . $param, $value, $type);
+		}
+		$this->setResult($this->getStatement()->execute());
 		return $this->getResult();
 	}
 	//-! style should be PDO::FETCH_DEFAULT but requires PHP 8.07
