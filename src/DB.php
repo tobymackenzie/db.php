@@ -165,6 +165,8 @@ class DB{
 	protected function openTunnel(){
 		if($this->needTunnel()){
 			$this->tunnel = proc_open("ssh {$this->sshID} -L 8306:{$this->sshDBConnection} -N", [], $nope);
+			//--sleep to ensure tunnel is set up by the time connection is set up
+			usleep(1000000);
 			return true;
 		}
 		return false;
