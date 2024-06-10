@@ -40,6 +40,20 @@ class GenericQuery extends Query{
 	public function setLimit($value){
 		$this->limit = $value;
 	}
+	public function getParameters(){
+		//--must build sql if value is an array so any built in params are there
+		if(is_array($this->value) && empty($this->params)){
+			$this->buildSql();
+		}
+		return parent::getParameters();
+	}
+	public function hasParameters(){
+		//--must build sql if value is an array so any built in params are there
+		if(is_array($this->value) && empty($this->params)){
+			$this->buildSql();
+		}
+		return parent::hasParameters();
+	}
 	public function setOrderBy($value){
 		$this->orderBy = $value;
 	}

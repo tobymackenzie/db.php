@@ -85,7 +85,7 @@ class DB{
 		}));
 		return $statement;
 	}
-	public function query($statement, $params = array()){
+	public function query($statement, $params = null){
 		if(!($statement instanceof Statement)){
 			$statement = $this->createQueryStatement($statement);
 		}
