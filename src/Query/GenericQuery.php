@@ -9,6 +9,7 @@ class GenericQuery extends Query{
 	protected $having;
 	protected $joins;
 	protected $limit;
+	protected $offset;
 	protected $orderBy;
 	protected $values;
 	protected $where;
@@ -53,6 +54,9 @@ class GenericQuery extends Query{
 			$this->buildSql();
 		}
 		return parent::hasParameters();
+	}
+	public function setOffset($value){
+		$this->offset = $value;
 	}
 	public function setOrderBy($value){
 		$this->orderBy = $value;
@@ -148,6 +152,9 @@ class GenericQuery extends Query{
 		}
 		if($this->limit){
 			$sql .= " LIMIT {$this->limit}";
+		}
+		if($this->offset){
+			$sql .= " OFFSET {$this->offset}";
 		}
 		return $sql;
 	}

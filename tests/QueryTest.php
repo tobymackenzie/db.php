@@ -8,6 +8,7 @@ class QueryTest extends TestCase{
 		$tests = [
 			['SELECT * FROM table1', 'SELECT * FROM table1']
 			,['SELECT * FROM table1 this', ['from'=> 'table1']]
+			,['SELECT * FROM table1 this LIMIT 100 OFFSET 100', ['from'=> 'table1', 'limit'=> 100, 'offset'=> 100]]
 			,['SELECT * FROM table1 this JOIN table2 ON table2.table1 = table1.id', [
 				'from'=> 'table1'
 				,'joins'=> 'JOIN table2 ON table2.table1 = table1.id'
