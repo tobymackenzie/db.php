@@ -15,7 +15,7 @@ class Query extends Structure{
 			}elseif(is_array($value)){
 				if(
 					isset($value['command'])
-					|| (isset($value['from']) && !(isset($value['select']) || isset($value['update']) || isset($value['delete'])))
+					|| (isset($value['table']) && !(isset($value['select']) || isset($value['update']) || isset($value['delete'])))
 					|| isset($value['joins'])
 					|| isset($value['value'])
 				){

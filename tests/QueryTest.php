@@ -7,10 +7,10 @@ class QueryTest extends TestCase{
 	public function testCreateQuery(){
 		$tests = [
 			['SELECT * FROM table1', 'SELECT * FROM table1'],
-			['SELECT * FROM table1 this', ['from'=> 'table1']],
-			['SELECT * FROM table1 this LIMIT 100 OFFSET 100', ['from'=> 'table1', 'limit'=> 100, 'offset'=> 100]],
+			['SELECT * FROM table1 this', ['table'=> 'table1']],
+			['SELECT * FROM table1 this LIMIT 100 OFFSET 100', ['table'=> 'table1', 'limit'=> 100, 'offset'=> 100]],
 			['SELECT * FROM table1 this JOIN table2 ON table2.table1 = table1.id', [
-				'from'=> 'table1',
+				'table'=> 'table1',
 				'joins'=> 'JOIN table2 ON table2.table1 = table1.id',
 			]],
 			[
@@ -22,7 +22,7 @@ class QueryTest extends TestCase{
 					. ' LIMIT 20, 100',
 				[
 					'values'=> ['this.id', 'table2.name']
-					,'from'=> 'table1'
+					,'table'=> 'table1'
 					,'joins'=> [
 						't2'=> [
 							'on'=> 'table2.table1 = table1.id'
@@ -49,7 +49,7 @@ class QueryTest extends TestCase{
 				'SELECT city, sum(amount) as amount FROM table1 this GROUP BY city HAVING amount > 20',
 				[
 					'values'=> ['city', 'sum(amount) as amount']
-					,'from'=> 'table1'
+					,'table'=> 'table1'
 					,'groupBy'=> 'city'
 					,'having'=> 'amount > 20'
 				],
@@ -67,6 +67,7 @@ class QueryTest extends TestCase{
 					'command'=> 'SHOW TABLES',
 				],
 			],
+			//--simple array of bits without using GenericQuery
 			[
 				'select * from table1 t1 INNER JOIN table2 t2 ON t2.t1_id = t1.id where t1.a = 12 AND t2.a = 12',
 				[

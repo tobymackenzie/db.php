@@ -4,7 +4,7 @@ use TJM\DB\Query;
 class GenericQuery extends Query{
 	protected $alias = 'this';
 	protected $command = 'SELECT';
-	protected $from;
+	protected $table;
 	protected $groupBy;
 	protected $having;
 	protected $joins;
@@ -25,9 +25,6 @@ class GenericQuery extends Query{
 	}
 	public function setCommand($value){
 		$this->command = $value;
-	}
-	public function setFrom($value){
-		$this->from = $value;
 	}
 	public function setGroupBy($value){
 		$this->groupBy = $value;
@@ -70,8 +67,8 @@ class GenericQuery extends Query{
 		}elseif($values){
 			$sql .= ' ' . $values;
 		}
-		if($this->from){
-			$sql .= " FROM {$this->from} {$this->alias}";
+		if($this->table){
+			$sql .= " FROM {$this->table} {$this->alias}";
 		}
 		if(is_array($this->joins)){
 			foreach($this->joins as $alias=> $join){
@@ -157,6 +154,9 @@ class GenericQuery extends Query{
 			$sql .= " OFFSET {$this->offset}";
 		}
 		return $sql;
+	}
+	public function setTable($value){
+		$this->table = $value;
 	}
 	protected function getValues(){
 		if(isset($this->values)){
