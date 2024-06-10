@@ -42,14 +42,14 @@ class GenericQuery extends Query{
 	}
 	public function getParameters(){
 		//--must build sql if value is an array so any built in params are there
-		if(is_array($this->value) && empty($this->params)){
+		if(!is_string($this->value) && empty($this->params)){
 			$this->buildSql();
 		}
 		return parent::getParameters();
 	}
 	public function hasParameters(){
 		//--must build sql if value is an array so any built in params are there
-		if(is_array($this->value) && empty($this->params)){
+		if(!is_string($this->value) && empty($this->params)){
 			$this->buildSql();
 		}
 		return parent::hasParameters();
