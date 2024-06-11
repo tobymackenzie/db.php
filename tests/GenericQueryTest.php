@@ -15,7 +15,7 @@ class GenericQueryTest extends QueryTestCase{
 				. ' INNER JOIN table2 t2 ON table2.table1 = table1.id LEFT JOIN table3 t3 ON table3.table2 = table2.id INNER JOIN table4 t4'
 				. ' WHERE table4.table3 = table3.id AND table2.type = :p1 AND table2.width >= :p2 AND table1.foo = :foo'
 				. ' ORDER BY table1.sort asc, table2.name desc'
-				. ' LIMIT 20, 100',
+				. ' LIMIT 20 OFFSET 100',
 			[
 				'values'=> ['this.id', 'table2.name']
 				,'table'=> 'table1'
@@ -38,7 +38,8 @@ class GenericQueryTest extends QueryTestCase{
 					,'table1.foo'=> ':foo'
 				]
 				,'orderBy'=> ['table1.sort'=> 'asc', 'table2.name desc']
-				,'limit'=> '20, 100'
+				,'limit'=> 20
+				,'offset'=> 100
 			],
 		],
 		[
