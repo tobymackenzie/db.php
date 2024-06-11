@@ -60,15 +60,27 @@ class GenericQuery extends Query{
 	}
 	protected function buildSql(){
 		$placeholderI = 0;
+		$commandType = explode(' ', $this->command);
+		$commandType = strtolower($commandType[0]);
+		$hasFrom = !in_array($commandType, array('insert', 'update'));
+		$hasEarlyValues = $hasFrom;
 		$sql = "{$this->command}";
 		$values = $this->getValues();
-		if(is_array($values)){
-			$sql .= ' ' . implode(', ', $values);
-		}elseif($values){
-			$sql .= ' ' . $values;
+		if($hasEarlyValues){
+			if(is_array($values)){
+				$sql .= ' ' . implode(', ', $values);
+			}elseif($values){
+				$sql .= ' ' . $values;
+			}
 		}
 		if($this->table){
-			$sql .= " FROM {$this->table} {$this->alias}";
+			if($hasFrom){
+				$sql .= ' FROM';
+			}
+			$sql .= " {$this->table}";
+			if($hasFrom){
+				$sql .= " {$this->alias}";
+			}
 		}
 		if(is_array($this->joins)){
 			foreach($this->joins as $alias=> $join){
@@ -88,6 +100,30 @@ class GenericQuery extends Query{
 				$joins = "INNER JOIN {$joins}";
 			}
 			$sql .= " {$joins}";
+		}
+		if(!$hasEarlyValues){
+			//-! currently only supports insert, update
+			$sql .= ' SET ';
+			if(is_array($values)){
+				$first = true;
+				foreach($values as $key=> $value){
+					if(!$first){
+						$sql .= ', ';
+					}else{
+						$first = false;
+					}
+					$sql .= "{$key}";
+					if(is_integer($value)){
+						$sql .= " = {$value}";
+					}elseif(is_null($value)){
+						$sql .= ' = NULL';
+					}else{
+						$sql .= " = \"{$value}\"";
+					}
+				}
+			}else{
+				$sql .= $values;
+			}
 		}
 		if($this->where){
 			$sql .= " WHERE ";

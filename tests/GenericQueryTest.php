@@ -64,5 +64,32 @@ class GenericQueryTest extends QueryTestCase{
 				'command'=> 'SHOW TABLES',
 			],
 		],
+		[
+			'update foo SET a = "a", b = "b", c = 1, d = NULL WHERE rowid = 1',
+			[
+				'command'=> 'update',
+				'table'=> 'foo',
+				'values'=> [
+					'a'=> 'a',
+					'b'=> 'b',
+					'c'=> 1,
+					'd'=> null,
+				],
+				'where'=> 'rowid = 1',
+			],
+		],
+		[
+			'insert into foo SET a = "a", b = "b", c = 1, d = NULL',
+			[
+				'command'=> 'insert into',
+				'table'=> 'foo',
+				'values'=> [
+					'a'=> 'a',
+					'b'=> 'b',
+					'c'=> 1,
+					'd'=> null,
+				],
+			],
+		],
 	];
 }
