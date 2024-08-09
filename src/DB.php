@@ -27,6 +27,7 @@ class DB{
 	protected $sshID; //--ssh 'user@server' to connect to.  Don't need user if specified in ssh config
 	protected $sshDBConnection = '127.0.0.1:3306'; //--remote `IP:Port` to connect to from remote server
 	protected $tunnel;
+	protected $tunnelPort = 8306;
 
 	public function __construct($dsnOrOpts, $user = null, $password = null, $options = null){
 		if($options){
@@ -164,7 +165,7 @@ class DB{
 	}
 	protected function openTunnel(){
 		if($this->needTunnel()){
-			$this->tunnel = proc_open("ssh {$this->sshID} -L 8306:{$this->sshDBConnection} -N", [], $nope);
+			$this->tunnel = proc_open("ssh {$this->sshID} -L {$this->tunnelPort}:{$this->sshDBConnection} -N", [], $nope);
 			//--sleep to ensure tunnel is set up by the time connection is set up
 			usleep(1000000);
 			return true;
