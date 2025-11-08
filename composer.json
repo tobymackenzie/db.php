@@ -17,6 +17,6 @@
 		"psr-4": {"TJM\\DB\\Tests\\": "tests"}
 	}
 	,"require": {
-		"php": ">=5.3.3"
+		"php": ">=5.4"
 	}
 }
